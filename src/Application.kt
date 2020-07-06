@@ -14,6 +14,9 @@ import io.ktor.routing.routing
 import com.remoLogger.gateways.repositories.DBFactory
 import com.remoLogger.gateways.repositories.SensorRecordsRepository
 import com.remoLogger.usecases.sensorRecord.fetch.FetchInteractor
+import io.ktor.application.call
+import io.ktor.response.respond
+import io.ktor.routing.get
 import org.slf4j.event.Level
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -36,6 +39,9 @@ fun Application.module(testing: Boolean = false) {
     DBFactory.init()
 
     routing {
+        get("/") {
+            call.respond("")
+        }
         sensorRecords(SensorRecordsController(
                 FetchInteractor(
                         SensorRecordsRepository()
