@@ -12,12 +12,14 @@ buildscript {
     dependencies {
         val kotlinVersion: String by project
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
+        classpath("com.google.cloud.tools:appengine-gradle-plugin:2.2.0")
     }
 }
 
 plugins {
     kotlin("jvm") version  "1.3.72"
     application
+    id("com.google.cloud.tools.appengine") version "2.1.0"
 }
 
 application {
@@ -71,6 +73,9 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.11.1")
     implementation("mysql:mysql-connector-java:8.0.19")
     implementation("com.zaxxer:HikariCP:3.4.2")
+    implementation("com.google.appengine:appengine-api-1.0-sdk:+")
+    implementation("com.google.appengine:appengine:+")
+    implementation("com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.0.16")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testImplementation("org.assertj:assertj-core:3.16.1")
@@ -99,13 +104,13 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-
 tasks {
+
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
 
     jar {
@@ -122,5 +127,15 @@ tasks {
         useJUnitPlatform {
             includeEngines("spek2")
         }
+    }
+}
+
+appengine {
+    stage {
+        setAppEngineDirectory(".")
+    }
+    deploy {
+        projectId = "GCLOUD_CONFIG"
+        version = "GCLOUD_CONFIG"
     }
 }

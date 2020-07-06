@@ -21,6 +21,8 @@ class DBFactory {
                 username = config.propertyOrNull("ktor.db.username")?.getString()
                 password = config.propertyOrNull("ktor.db.password")?.getString()
                 maximumPoolSize = config.propertyOrNull("ktor.db.maximumPoolSize")?.getString()?.toInt() ?: 10
+                addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory")
+                addDataSourceProperty("cloudSqlInstance", config.propertyOrNull("ktor.db.cloudSqlInstance")?.getString())
             }
         )) {
             Database.connect(dataSource)

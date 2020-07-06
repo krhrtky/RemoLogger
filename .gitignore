@@ -7,3 +7,4 @@
 *.iws
 /docker
 /.envrc
+/secret.yaml
