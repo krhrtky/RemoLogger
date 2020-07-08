@@ -8,13 +8,26 @@ import com.remoLogger.entities.sensorRecord.Illuminace
 import com.remoLogger.entities.sensorRecord.SensorRecord
 import com.remoLogger.entities.sensorRecord.Temperature
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
+typealias Domains = com.remoLogger.entities.sensorRecord.SensorRecords
+
 class SensorRecordsRepository: ISensorRecordRepository {
 
+    override fun create(sensorRecord: SensorRecord) {
+        SensorRecords.insert {
+            it[id] = sensorRecord.id.value
+            it[temperature] = sensorRecord.temperature.value
+            it[humidity] = sensorRecord.humidity.value
+            it[illuminance] = sensorRecord.illuminance.value
+            it[createdAt] = sensorRecord.createdAt.value
+        }
+    }
+
     override fun findAll() = transaction {
-        com.remoLogger.entities.sensorRecord.SensorRecords(SensorRecords.selectAll().map { convertToSensorRecord(it) })
+        Domains(SensorRecords.selectAll().map { convertToSensorRecord(it) })
     }
 
     private fun convertToSensorRecord(resultRow: ResultRow) = SensorRecord(

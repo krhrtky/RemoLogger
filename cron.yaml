@@ -1,0 +1,6 @@
+cron:
+- description: "records remo logs"
+  url: /record
+  schedule: every 1 mins
+  retry_parameters:
+    job_retry_limit: 1
