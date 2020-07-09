@@ -1,14 +1,13 @@
 package com.remoLogger.controllers
 
 import io.ktor.application.call
-import io.ktor.client.request.request
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.header
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 
-fun Route.sensorRecords(controller: SensorRecordsController) {
+fun Route.sensorRecords(controller: SensorRecordsController = SensorRecordsController()) {
 
     get("/record") {
         val appengineCronHeader = call.request.header("X-Appengine-Cron")?.toBoolean()

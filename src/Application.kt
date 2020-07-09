@@ -2,9 +2,8 @@ package com.remoLogger
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
-import com.remoLogger.controllers.SensorRecordsController
 import com.remoLogger.controllers.sensorRecords
-import com.remoLogger.gateways.api.natureremo.NatureAPIClient
+import com.remoLogger.externals.di.DIContainer
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
@@ -13,15 +12,16 @@ import io.ktor.jackson.jackson
 import io.ktor.request.path
 import io.ktor.routing.routing
 import com.remoLogger.gateways.repositories.DBFactory
-import com.remoLogger.gateways.repositories.SensorRecordsRepository
-import com.remoLogger.usecases.sensorRecord.fetch.FetchInteractor
-import com.remoLogger.usecases.sensorRecord.record.RecordInteractor
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.call
 import io.ktor.config.HoconApplicationConfig
 import io.ktor.response.respond
 import io.ktor.routing.get
+import org.koin.ktor.ext.Koin
+import org.koin.logger.slf4jLogger
 import org.slf4j.event.Level
+import org.koin.core.logger.Level.INFO
+
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -33,6 +33,11 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
+    }
+
+    install(Koin) {
+        slf4jLogger(INFO)
+        modules(DIContainer.sensorRecords)
     }
 
     install(ContentNegotiation) {
@@ -48,19 +53,6 @@ fun Application.module(testing: Boolean = false) {
         get("/") {
             call.respond("")
         }
-        sensorRecords(
-            SensorRecordsController(
-                FetchInteractor(
-                    SensorRecordsRepository()
-                ),
-                RecordInteractor(
-                    NatureAPIClient(
-                        config.propertyOrNull("ktor.api.remo.endpoint")?.getString() ?: "",
-                        config.propertyOrNull("ktor.api.remo.authKey")?.getString() ?: ""
-                    ),
-                    SensorRecordsRepository()
-                )
-            )
-        )
+        sensorRecords()
     }
 }

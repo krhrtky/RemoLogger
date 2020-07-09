@@ -17,7 +17,6 @@ class SensorRecord(
             humidity,
             illuminance,
             CreatedAt(DateTime.now())
-
         )
     }
 }

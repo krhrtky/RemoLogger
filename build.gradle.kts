@@ -54,6 +54,7 @@ dependencies {
     val exposedVersion: String by project
     val spekVersion: String by project
     val logbackVersion: String by project
+    val koinVersion: String by project
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -76,6 +77,8 @@ dependencies {
     implementation("com.google.appengine:appengine-api-1.0-sdk:+")
     implementation("com.google.appengine:appengine:+")
     implementation("com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.0.16")
+    implementation("org.koin:koin-ktor:$koinVersion")
+    implementation("org.koin:koin-logger-slf4j:2.1.5")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testImplementation("org.assertj:assertj-core:3.16.1")
