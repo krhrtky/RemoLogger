@@ -6,7 +6,6 @@ class FetchInteractor(private val repository: ISensorRecordRepository): IFetchUs
 
     override fun handle(): List<FetchSingleRecord> = repository
             .findAll()
-            .value
             .map {
                 FetchSingleRecord(
                         it.id.value,
