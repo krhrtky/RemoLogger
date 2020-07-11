@@ -6,6 +6,8 @@ import io.ktor.client.engine.apache.Apache
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.util.error
+import org.slf4j.LoggerFactory
 
 open class NatureAPIClient(
     private val endpoint: String,
@@ -14,6 +16,8 @@ open class NatureAPIClient(
         install(JsonFeature)
     }
 ): INatureAPIClient {
+
+    val logger = LoggerFactory.getLogger(this.javaClass)
     /**
      * Fetch the list of Remo devices the user has access to.
      *
@@ -24,9 +28,12 @@ open class NatureAPIClient(
             header("Authorization", "Bearer $apiAuthKey")
         }
     }.fold(
-        onSuccess = { it },
+        onSuccess = {
+            logger.info(it.toString())
+            it
+        },
         onFailure = {
-            it.printStackTrace()
+            logger.error(it)
             emptyList()
         }
     )
