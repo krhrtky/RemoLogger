@@ -1,5 +1,6 @@
 package com.remoLogger.gateways.api.natureremo
 
+import com.remoLogger.entities.sensorRecord.*
 import com.remoLogger.gateways.api.natureremo.model.Device
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
@@ -30,11 +31,17 @@ open class NatureAPIClient(
     }.fold(
         onSuccess = {
             logger.info(it.toString())
-            it
+            SensorRecords(it.map {
+                SensorRecord.new(
+                    Temperature(it.newest_events.te.`val`),
+                    Humidity(it.newest_events.hu.`val`),
+                    Illuminace(it.newest_events.il.`val`)
+                )
+            })
         },
         onFailure = {
             logger.error(it)
-            emptyList()
+            SensorRecords(emptyList())
         }
     )
 }

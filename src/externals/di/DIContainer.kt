@@ -1,7 +1,7 @@
 package com.remoLogger.externals.di
 
 import com.remoLogger.entities.sensorRecord.ISensorRecordRepository
-import com.remoLogger.gateways.api.natureremo.INatureAPIClient
+import com.remoLogger.entities.sensorRecord.INatureAPIClient
 import com.remoLogger.gateways.api.natureremo.NatureAPIClient
 import com.remoLogger.gateways.repositories.SensorRecordsRepository
 import com.remoLogger.usecases.sensorRecord.fetch.FetchInteractor
