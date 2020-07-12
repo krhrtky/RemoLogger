@@ -88,6 +88,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("com.h2database:h2:1.3.148")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     // spek requires kotlin-reflect, can be omitted if already in the classpath
     testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
