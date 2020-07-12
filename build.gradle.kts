@@ -20,6 +20,7 @@ plugins {
     kotlin("jvm") version  "1.3.72"
     application
     id("com.google.cloud.tools.appengine") version "2.1.0"
+    jacoco
 }
 
 application {
@@ -129,11 +130,27 @@ tasks {
             }
         )
     }
-    test {
-        useJUnitPlatform {
-            includeEngines("spek2")
-        }
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.isEnabled = false
+        csv.isEnabled = false
+        html.destination = file("${buildDir}/jacocoHtml")
     }
+}
+
+tasks.test {
+    useJUnitPlatform {
+        includeEngines("spek2")
+    }
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
 appengine {
