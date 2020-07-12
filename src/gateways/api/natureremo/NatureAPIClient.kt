@@ -22,9 +22,9 @@ open class NatureAPIClient(
     /**
      * Fetch the list of Remo devices the user has access to.
      *
-     * @return List of Remo devices
+     * @return SensorRecords
      */
-    override suspend fun getDevices() = runCatching {
+    override suspend fun getRecords() = runCatching {
         client.get<List<Device>>("$endpoint/1/devices") {
             header("Authorization", "Bearer $apiAuthKey")
         }

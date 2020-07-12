@@ -14,7 +14,7 @@ class RecordInteractor(
 
     override fun handle() {
         val response = runBlocking {
-            client.getDevices()
+            client.getRecords()
         }
         transaction {
             addLogger(StdOutSqlLogger)
