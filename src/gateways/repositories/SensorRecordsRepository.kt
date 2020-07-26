@@ -6,13 +6,13 @@ import com.remoLogger.entities.sensorRecord.ISensorRecordRepository
 import com.remoLogger.entities.sensorRecord.Id
 import com.remoLogger.entities.sensorRecord.Illuminace
 import com.remoLogger.entities.sensorRecord.SensorRecord
+import com.remoLogger.entities.sensorRecord.SensorRecords as Domains
 import com.remoLogger.entities.sensorRecord.Temperature
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-
-typealias Domains = com.remoLogger.entities.sensorRecord.SensorRecords
+import org.joda.time.DateTime
 
 class SensorRecordsRepository: ISensorRecordRepository {
 
@@ -26,8 +26,12 @@ class SensorRecordsRepository: ISensorRecordRepository {
         }
     }
 
-    override fun findAll() = transaction {
-        Domains(SensorRecords.selectAll().map { convertToSensorRecord(it) })
+    override fun find(from: DateTime, to: DateTime, limit: Int) = transaction {
+        Domains(
+            SensorRecords.select { SensorRecords.createdAt.between(from, to) }
+            .limit(limit)
+            .map { convertToSensorRecord(it) }
+        )
     }
 
     private fun convertToSensorRecord(resultRow: ResultRow) = SensorRecord(

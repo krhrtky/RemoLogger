@@ -22,7 +22,7 @@ object FetchInteractorSpec: Spek({
 
         context("repository return empty list.") {
             beforeEachTest {
-                every { sensorRecordRepository.findAll() } returns SensorRecords(emptyList())
+                every { sensorRecordRepository.find(any(), any(), 1000) } returns SensorRecords(emptyList())
             }
 
             it("should return empty list.") {
@@ -42,7 +42,7 @@ object FetchInteractorSpec: Spek({
                         CreatedAt(DateTime.now())
                     )
                 }
-                every { sensorRecordRepository.findAll() } returns SensorRecords(sensorRecords)
+                every { sensorRecordRepository.find(any(), any(), 1000) } returns SensorRecords(sensorRecords)
             }
 
             it("should return list has 2 items.") {

@@ -5,7 +5,7 @@ import com.remoLogger.entities.sensorRecord.ISensorRecordRepository
 class FetchInteractor(private val repository: ISensorRecordRepository): IFetchUseCase {
 
     override fun handle(): List<FetchSingleRecord> = repository
-            .findAll()
+            .find()
             .map {
                 FetchSingleRecord(
                         it.id.value,

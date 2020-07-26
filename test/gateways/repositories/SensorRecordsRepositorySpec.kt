@@ -62,7 +62,7 @@ object SensorRecordsRepositorySpec: Spek({
                     repository.create(sensorRecord)
                 }
 
-                changes.setEndPointNow();
+                changes.setEndPointNow()
 
                 assertThat(changes).hasNumberOfChanges(1)
                     .change()
@@ -80,7 +80,7 @@ object SensorRecordsRepositorySpec: Spek({
         }
     }
 
-    describe(".findAll") {
+    describe(".find") {
         beforeEachGroup {
             Database.connect(
                 "jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1",
@@ -116,7 +116,7 @@ object SensorRecordsRepositorySpec: Spek({
                                 (20 + it).toLong(),
                                 (60 + it).toLong(),
                                 (100 + it).toLong(),
-                                "2020-07-0${it} 10:00:00.123"
+                                DateTime.now().toString("yyyy-MM-dd HH:mm:ss.SSS")
                             )
                         }
                     }
@@ -125,7 +125,7 @@ object SensorRecordsRepositorySpec: Spek({
 
             it("should return list has 2 items.") {
 
-                val result = repository.findAll()
+                val result = repository.find()
 
                 assertThat(result).hasSize(2)
             }
@@ -139,7 +139,7 @@ object SensorRecordsRepositorySpec: Spek({
             }
             it("should return empty list.") {
 
-                val result = repository.findAll()
+                val result = repository.find()
 
                 assertThat(result).isEmpty()
             }
