@@ -9,6 +9,7 @@ import com.remoLogger.entities.sensorRecord.SensorRecord
 import com.remoLogger.entities.sensorRecord.SensorRecords as Domains
 import com.remoLogger.entities.sensorRecord.Temperature
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -29,8 +30,10 @@ class SensorRecordsRepository: ISensorRecordRepository {
     override fun find(from: DateTime, to: DateTime, limit: Int) = transaction {
         Domains(
             SensorRecords.select { SensorRecords.createdAt.between(from, to) }
-            .limit(limit)
-            .map { convertToSensorRecord(it) }
+                .orderBy(SensorRecords.createdAt, SortOrder.DESC)
+                .limit(limit)
+                .reversed()
+                .map { convertToSensorRecord(it) }
         )
     }
 
